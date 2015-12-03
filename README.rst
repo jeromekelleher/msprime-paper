@@ -24,9 +24,8 @@ we need the following::
 
     $ sudo apt-get install python-dev python-pip libgsl0-dev libhdf5-serial-dev \
         pkg-config python-numpy python-pandas python-matplotlib libboost-dev \
-        default-jre asymptote r-cran-ape
+        default-jre asymptote r-cran-ape python-biopython
     $ sudo pip install -r requirements.txt
-
 
 -----------------------
 Paper and illustrations
