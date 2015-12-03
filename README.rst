@@ -8,6 +8,9 @@ This repo contains all source code required to create the msprime paper.
 purpose. It is not high quality software and probably contains bugs.
 Use at your own risk!**
 
+The ``src/algorithms.py`` file contains simple implementations of
+all the algorithms in the paper.
+
 -------------
 Prerequisites
 -------------
@@ -22,7 +25,7 @@ we need the following::
     $ sudo apt-get install python-dev python-pip libgsl0-dev libhdf5-serial-dev \
         pkg-config python-numpy python-pandas python-matplotlib libboost-dev \
         default-jre asymptote r-cran-ape
-    $ pip install -r requirements.txt --user
+    $ sudo pip install -r requirements.txt
 
 
 -----------------------
@@ -54,7 +57,7 @@ Running Simulations
 +++++++++++++++++++
 
 Creating the plots to compare simulations works in three stages. First, we run the
-simulations and output the replicate data; second, we collect the collect the replicate
+simulations and output the replicate data; second, we collect the replicate
 data and put it into a central file; and finally, we create the plots.
 
 All work running simulations and plotting the results is done in the file
