@@ -1,4 +1,5 @@
 msprime==0.1.6
-matplotlib
-numpy
-pandas
+# We also require BioPython matplotlib, numpy and pandas, but we install these 
+# through apt for simplicity.
+dendropy
+ete2
