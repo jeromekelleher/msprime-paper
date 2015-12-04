@@ -114,7 +114,7 @@ ${HTSLIB}:
 	mv htslib-1.2.1 htslib
 	${MAKE} -C ${HTSLIB}
 
-${PBWT}: ${HSTLIB}
+${PBWT}: ${HTSLIB}
 	git clone https://github.com/richarddurbin/pbwt 
 	${MAKE} -C pbwt version.h
 	${MAKE} -C pbwt 
