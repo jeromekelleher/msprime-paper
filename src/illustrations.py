@@ -173,7 +173,9 @@ class Illustrator(object):
             if echo:
                 print(f.read())
             subprocess.check_call(
-                ["asy", "-f", "pdf", "-o", filename, f.name])
+                ["asy", "-f", "pdf", "-o", filename + ".pdf", f.name])
+            subprocess.check_call(
+                ["asy", "-f", "eps", "-o", filename + ".eps", f.name])
 
     def _generate_source(self, out):
         print("size(0,0);", file=out)
@@ -387,7 +389,7 @@ class AlgorithmIllustrator(Illustrator):
         # Now we collect the nodes that are represented in each interval.
         for (a1, b1), l in intervals.items():
             for ancestor in ancestors:
-                for a2, b2, node in ancestor:
+                for a2, b2, node, _ in ancestor:
                     if intervals_intersect(a1, b1, a2, b2):
                         l.append(node)
         return intervals
@@ -424,7 +426,7 @@ class AlgorithmIllustrator(Illustrator):
         x = self.box_x_padding
         y = -self.box_y_padding
         num_links = self._get_num_links(ancestors)
-        s = "label({}, '$({})$ $t={:.3f} \qquad L={}$', ({}, {}), E);".format(
+        s = "label({}, '$({})$ $t={:.3f} \qquad B={}$', ({}, {}), E);".format(
                 picture_name, label, time, num_links, x, y)
         x = self.box_width - self.box_x_padding
         print(s, file=out)
@@ -443,7 +445,7 @@ class AlgorithmIllustrator(Illustrator):
             s = "label({}, '$l_{{{}}}$', ({}, {}), W);".format(
                 picture_name, self._get_ancestor_id(ancestor), lx, y)
             print(s, file=out)
-            for l, r, node in ancestor:
+            for l, r, node, _ in ancestor:
                 lx = self.box_x_padding + l * self.ancestor_x_scale
                 rx = self.box_x_padding + r * self.ancestor_x_scale
                 s = "draw({}, ({},{})--({},{}), node_{} + 2);".format(
@@ -535,10 +537,10 @@ class AlgorithmIllustrator(Illustrator):
 def main():
 
     illustrator = TreeSequenceIllustrator(4, random_seed=21)
-    illustrator.write("figures/tree-sequence-illustration.pdf", False)
+    illustrator.write("figures/tree-sequence-illustration", False)
 
     illustrator = AlgorithmIllustrator(4, random_seed=21)
-    illustrator.write("figures/hudsons-algorithm-illustration.pdf", False)
+    illustrator.write("figures/hudsons-algorithm-illustration", False)
 
 if __name__ == "__main__":
     main()

@@ -8,6 +8,8 @@ paper.pdf: paper.tex paper.bib ${FIGURES}
 	pdflatex paper.tex
 	bibtex paper
 	pdflatex paper.tex
+	pdflatex paper.tex
+	pdflatex paper.tex
 
 paper.ps: paper.dvi 
 	dvips paper
@@ -36,12 +38,10 @@ clean:
 	rm -f *.log *.dvi *.aux
 	rm -f *.blg *.bbl
 	rm -f figures/*
-	rm -f *.eps 
 	rm -f tags
 
 tags: paper.tex paper.bib src/*.py
 	ctags src/*.py # paper.tex paper.bib 
-
 
 mrproper:
 	rm -f *.ps *.pdf

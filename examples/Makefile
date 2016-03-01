@@ -36,6 +36,7 @@ all: ${HDF5_TREES_COMPRESSED} ${TEXT_RECORDS_COMPRESSED} \
 	${TREE_BENCHMARKS} ${TEXT_HAPLOTYPES_COMPRESSED}\
 	${PBWT_HAPLOTYPES} ${NEWICK_SUBSET_TREEZIP_COMPRESSED} \
 	${PLINK_BENCHMARK}
+.PHONY: all
 	
 ${FILEDIR}:
 	mkdir -p ${FILEDIR}
@@ -126,9 +127,9 @@ ${TREEZIP}:
 	cp treezip/TreeZip/treezip treezip
 
 ${PLINK_19}:
-	wget https://www.cog-genomics.org/static/bin/plink151126/plink_linux_x86_64.zip
+	wget https://www.cog-genomics.org/static/bin/plink151204/plink_linux_x86_64.zip
 	unzip plink_linux_x86_64.zip
 	rm toy.* prettify LICENSE
 
 clean:
-	rm -fR htslib* treezip ${FILEDIR}
+	rm -fR htslib* treezip ${FILEDIR} plink* pbwt

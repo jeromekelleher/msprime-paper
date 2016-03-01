@@ -169,7 +169,7 @@ class MsprimeSimulator(Simulator):
         self.num_multiple_re_events = \
             sim.get_num_multiple_recombination_events()
         self.num_re_events[j] = sim.get_num_recombination_events()
-        self.num_ca_events[j] = sim.get_num_coancestry_events()
+        self.num_ca_events[j] = sim.get_num_common_ancestor_events()
         self.num_records[j] = tree_sequence.get_num_records()
         self.num_nodes[j] = tree_sequence.get_num_nodes()
         self.num_records_per_tree = get_mean_records_per_tree(tree_sequence)
@@ -341,10 +341,13 @@ class ScrmApproxSimulator(MsSimulator):
     """
     simulator_id = "scrm"
     executable = ["simulators/scrm"]
+    def __init__(self, sample_size, num_loci, approx_length=0):
+        super(ScrmApproxSimulator, self).__init__(sample_size, num_loci)
+        self._approx_length = approx_length
 
     def get_args(self):
         args = super(ScrmApproxSimulator, self).get_args()
-        args += ['-l', '0']
+        args += ['-l', str(self._approx_length)]
         return args
 
 
@@ -503,6 +506,32 @@ class Dataset(object):
         rho = DEFAULT_RECOMBINATION_RATE
         num_loci = (1 + R / (4 * Ne * rho)).astype(int)
         return num_loci
+
+
+class SmallNDataset(Dataset):
+    """
+    Dataset holding simulations in which we compare simulators for
+    small sample sizes with good approximation values.
+    """
+    default_num_replicates = 100
+    identifier = "small_n"
+    fixed_n = 20
+
+    def __init__(self):
+        self.simulators = []
+        n = self.fixed_n
+        num_loci = np.linspace(100, 100 * 10**6, 20).astype(int)
+        for m in num_loci:
+            self.simulators.append(MscompatSimulator(n, m))
+            sim = ScrmApproxSimulator(n, m)
+            sim.simulator_id = "scrm_smc"
+            self.simulators.append(sim)
+            sim = ScrmApproxSimulator(n, m, "100r")
+            sim.simulator_id = "scrm_100"
+            self.simulators.append(sim)
+            sim = ScrmApproxSimulator(n, m, "500r")
+            sim.simulator_id = "scrm_500"
+            self.simulators.append(sim)
 
 
 class MixedRandNDataset(Dataset):
@@ -769,6 +798,83 @@ class DualPanelFigure(Figure):
         self.save_plot(fig)
 
 
+class SmallNFigure(Figure):
+    """
+    Figure showing a comparison of scrm and msprime for a small sample size
+    and using scrm's improved approximations.
+    """
+    dataset_class = SmallNDataset
+
+    def plot(self):
+        df = self.data
+        fig, ax1 = pyplot.subplots()
+        R_scale = 10**3
+        loci_scale = 10**6
+        label_map = {
+            "scrm_smc": "scrm -l 0 (SMC')",
+            "scrm_100": "scrm -l 100r",
+            "scrm_500": "scrm -l 500r",
+            "mspms": "msprime (Newick)"
+        }
+        colour_map = {
+            "scrm_smc": colour_wheel[2],
+            "scrm_100": colour_wheel[1],
+            "scrm_500": colour_wheel[3],
+            "mspms": colour_wheel[0],
+        }
+        marker_map = {
+            "mspms": "o",
+            "scrm": "+",
+            "scrm_smc": "x",
+            "scrm_100": "d",
+            "scrm_500": "^",
+        }
+
+        y_scale_factor = 1
+        lines = []
+        labels = []
+        for sim in ["mspms", "scrm_500", "scrm_100", "scrm_smc"]:
+            colour = colour_map[sim]
+            marker = marker_map[sim]
+            s = df[df.simulator == sim]
+            s = s.sort("R")
+            v = s[self.plotted_value] / y_scale_factor
+            l, = ax1.plot(
+                s.num_loci / loci_scale, v, color=colour, marker=marker)
+            lines.append(l)
+            labels.append(label_map[sim])
+        ax1.legend(
+            lines, labels, loc="upper left", numpoints=1,
+            fontsize="small")
+        ax1.set_xlabel("Megabases")
+        ax1.set_ylabel(self.y_label)
+
+        ty = ax1.twiny()
+        ty.set_xlabel("$\\rho \\times \\, 10^3$")
+
+        def xconv(m):
+            Ne = DEFAULT_EFFECTIVE_POPULATION_SIZE
+            rho = DEFAULT_RECOMBINATION_RATE
+            R = 4 * Ne * rho * (m * loci_scale - 1)
+            return R / R_scale
+        ty.set_xlim(xconv(x) for x in ax1.get_xlim())
+        fig.tight_layout()
+        fig.text(0.41, 0.97, "sample size = 20")
+        self.save_plot(fig)
+
+
+class SmallNSimulationTimeFigure(SmallNFigure):
+    identifier = "small_n_simulation_time"
+    y_label = "CPU Time (seconds)"
+    plotted_value = "cpu_time"
+
+
+class SmallNSimulationMemoryFigure(SmallNFigure):
+    identifier = "small_n_simulation_memory"
+    y_label = "Memory (Gigabytes)"
+    plotted_value = "memory"
+
+
 class NumEventsFigure(DualPanelFigure):
     """
     The figure plotting the number of coancestry events.
@@ -959,9 +1065,12 @@ def main():
         AlgorithmStatsDataset,
         TreeSimulatorStatsDataset,
         HaplotypeSimulatorStatsDataset,
+        SmallNDataset,
     ]
     plots = [
         NumEventsFigure,
+        SmallNSimulationTimeFigure,
+        SmallNSimulationMemoryFigure,
         TreeSimulationTimeFigure,
         TreeSimulationMemoryFigure,
         TreeSimulationNumTreesFigure,

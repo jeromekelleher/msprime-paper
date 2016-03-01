@@ -1,16 +1,163 @@
-\documentclass[10pt]{article}
+% Template for PLoS
+% Version 3.1 February 2015
+%
+% To compile to pdf, run:
+% latex plos.template
+% bibtex plos.template
+% latex plos.template
+% latex plos.template
+% dvipdf plos.template
+%
+% % % % % % % % % % % % % % % % % % % % % %
+%
+% -- IMPORTANT NOTE
+%
+% This template contains comments intended
+% to minimize problems and delays during our production
+% process. Please follow the template instructions
+% whenever possible.
+%
+% % % % % % % % % % % % % % % % % % % % % % %
+%
+% Once your paper is accepted for publication,
+% PLEASE REMOVE ALL TRACKED CHANGES in this file and leave only
+% the final text of your manuscript.
+%
+% There are no restrictions on package use within the LaTeX files except that
+% no packages listed in the template may be deleted.
+%
+% Please do not include colors or graphics in the text.
+%
+% Please do not create a heading level below \subsection. For 3rd level headings, use \paragraph{}.
+%
+% % % % % % % % % % % % % % % % % % % % % % %
+%
+% -- FIGURES AND TABLES
+%
+% Please include tables/figure captions directly after the paragraph where they are first cited in the text.
+%
+% DO NOT INCLUDE GRAPHICS IN YOUR MANUSCRIPT
+% - Figures should be uploaded separately from your manuscript file.
+% - Figures generated using LaTeX should be extracted and removed from the PDF before submission.
+% - Figures containing multiple panels/subfigures must be combined into one image file before submission.
+% For figure citations, please use "Fig." instead of "Figure".
+% See http://www.plosone.org/static/figureGuidelines for PLOS figure guidelines.
+%
+% Tables should be cell-based and may not contain:
+% - tabs/spacing/line breaks within cells to alter layout or alignment
+% - vertically-merged cells (no tabular environments within tabular environments, do not use \multirow)
+% - colors, shading, or graphic objects
+% See http://www.plosone.org/static/figureGuidelines#tables for table guidelines.
+%
+% For tables that exceed the width of the text column, use the adjustwidth environment as illustrated in the example table in text below.
+%
+% % % % % % % % % % % % % % % % % % % % % % % %
+%
+% -- EQUATIONS, MATH SYMBOLS, SUBSCRIPTS, AND SUPERSCRIPTS
+%
+% IMPORTANT
+% Below are a few tips to help format your equations and other special characters according to our specifications. For more tips to help reduce the possibility of formatting errors during conversion, please see our LaTeX guidelines at http://www.plosone.org/static/latexGuidelines
+%
+% Please be sure to include all portions of an equation in the math environment.
+%
+% Do not include text that is not math in the math environment. For example, CO2 will be CO\textsubscript{2}.
+%
+% Please add line breaks to long display equations when possible in order to fit size of the column.
+%
+% For inline equations, please do not include punctuation (commas, etc) within the math environment unless this is part of the equation.
+%
+% % % % % % % % % % % % % % % % % % % % % % % %
+%
+% Please contact latex@plos.org with any questions.
+%
+% % % % % % % % % % % % % % % % % % % % % % % %
 
-\usepackage{amsmath,amssymb,amsthm}
-\usepackage{graphicx}
+\documentclass[10pt,letterpaper]{article}
+\usepackage[top=0.85in,left=2.75in,footskip=0.75in]{geometry}
+
+% Use adjustwidth environment to exceed column width (see example table in text)
+\usepackage{changepage}
+
+% Use Unicode characters when possible
+\usepackage[utf8]{inputenc}
+
+% textcomp package and marvosym package for additional characters
+\usepackage{textcomp,marvosym}
+
+% fixltx2e package for \textsubscript
+\usepackage{fixltx2e}
+
+% amsmath and amssymb packages, useful for mathematical formulas and symbols
+\usepackage{amsmath,amssymb}
+
+% cite package, to clean up citations in the main text. Do not remove.
+\usepackage{cite}
+
+% Use nameref to cite supporting information files (see Supporting Information section for more info)
+\usepackage{nameref,hyperref}
+
+% line numbers
+\usepackage[right]{lineno}
+
+% ligatures disabled
+\usepackage{microtype}
+\DisableLigatures[f]{encoding = *, family = * }
+
+% rotating package for sideways tables
+\usepackage{rotating}
+
+% Remove comment for double spacing
+%\usepackage{setspace}
+%\doublespacing
+
+% Text layout
+\raggedright
+\setlength{\parindent}{0.5cm}
+\textwidth 5.25in
+\textheight 8.75in
+
+% Bold the 'Figure #' in the caption and separate it from the title/caption with a period
+% Captions will be left justified
+\usepackage[aboveskip=1pt,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=off]{caption}
+
+% Use the PLoS provided BiBTeX style
+\bibliographystyle{plos2015}
+
+% Remove brackets from numbering in List of References
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+% Leave date blank
+\date{}
+
+% Header and Footer with logo
+\usepackage{lastpage,fancyhdr,graphicx}
+\usepackage{epstopdf}
+\pagestyle{myheadings}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\includegraphics[width=2.0in]{PLOS-submission.eps}}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\footrule}{\hrule height 2pt \vspace{2mm}}
+\fancyheadoffset[L]{2.25in}
+\fancyfootoffset[L]{2.25in}
+\lfoot{\sf PLOS}
+
+%% Include all macros below
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% JK MACROS and includes %%%%%%%%%%%%%%%%%%%%%%%%
+
+% \usepackage{amsmath,amssymb,amsthm}
+% \usepackage{graphicx}
 % \usepackage[round]{natbib}
-\usepackage[square,numbers]{natbib}
+\usepackage[square,numbers,compress]{natbib}
 \usepackage{url}
+\usepackage{caption} % Used to change labels for SI figures.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Local definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newtheorem{lem}{Lemma}
 
 \newcommand{\E}[0]{\ensuremath{\mathbb{E}}}
 \newcommand{\cardinality}[1]{\ensuremath{\left|#1\right|}}
@@ -79,15 +226,40 @@
 \algbegin Algorithm #1. ({#2}). #3 }
 {\vspace{1em}}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%% END JK MACROS and includes %%%%%%%%%%%%%%%%%%%%%%%%
+%% END MACROS SECTION
 
 \begin{document}
+\vspace*{0.35in}
 
-\title{Efficient coalescent simulation and genealogical
+% Title must be 250 characters or less.
+% Please capitalize all terms in the title except conjunctions, prepositions, and articles.
+\begin{flushleft}
+{\Large
+\textbf\newline{Efficient coalescent simulation and genealogical
     analysis for large sample sizes}
-\author{Jerome Kelleher \and Alison M.\ Etheridge \and Gilean McVean}
-\maketitle
+}
+\newline
+% Insert author names, affiliations and corresponding author email
+\\
+Jerome Kelleher\textsuperscript{1},
+Alison M Etheridge\textsuperscript{2},
+Gilean McVean\textsuperscript{1}
+\\
+\bigskip
+\bf{1} Wellcome Trust Centre for Human Genetics, University of Oxford, Oxford, UK
+\\
+\bf{2} Department of Statistics, University of Oxford, Oxford, UK
+\\
+\bigskip
 
-\begin{abstract}
+% Use the asterisk to denote corresponding authorship and provide email address in note below.
+* jerome.kelleher@well.ox.ac.uk
+
+\end{flushleft}
+
+% Please keep the abstract below 300 words
+\section*{Abstract}
 A central challenge in the analysis of genetic variation is to
 provide realistic genome simulation across millions of samples. Present day
 coalescent simulations do not scale well, or use approximations that fail to
@@ -101,10 +273,31 @@ with recombination for chromosome-sized regions over hundreds of thousands of
 samples is possible, and substantially faster than present-day approximate
 methods. We can also analyse the results orders of magnitude more quickly than
 with existing methods.
-\end{abstract}
+
+% Please keep the Author Summary between 150 and 200 words Use first person.
+% PLOS ONE authors please skip this step. Author Summary not valid for PLOS ONE
+% submissions.
+\section*{Author Summary}
+
+Our understanding of the distribution of genetic variation in natural
+populations has been driven by mathematical models of the underlying biological
+and demographic processes. A key strength of such coalescent models is that
+they enable efficient simulation of data we might see under a variety of
+evolutionary scenarios. However, current methods are not well suited to
+simulating genome-scale data sets on hundreds of thousands of samples, which is
+essential if we are to understand the data generated by population-scale
+sequencing projects.  Similarly, processing the results of large simulations
+also presents researchers with a major challenge, as it can take many days just
+to read the data files. In this paper we solve these problems by introducing a
+new way to represent information about the ancestral process. This new
+representation leads to huge gains in simulation speed and storage efficiency
+so that large simulations complete in minutes and the output files can be
+processed in seconds.
 
 
-\section{Introduction}
+\linenumbers
+
+\section*{Introduction}
 \label{sec-introduction}
 
 The coalescent process~\citep{k82,h83a} underlies much of modern population
@@ -124,25 +317,24 @@ early successes in characterising this process~\citep{hk85,kh85} little
 progress was made because of the complex distribution of blocks of ancestral
 material among ancestors. Some years after Hudson's pioneering work, the study
 of recombination in the coalescent was recast in the framework of the Ancestral
-Recombination Graph~\citep{g91,gm97}. In the ARG, nodes are events
-(either recombination or common ancestor) and the edges are ancestral
-chromosomes. A recombination event results in a single ancestral chromosome
-splitting into two chromosomes, and a common ancestor event results in two
-chromosomes merging into a common ancestor. Analytically, the ARG is a
-considerable simplification of Hudson's earlier work as it models all
-recombination events that occurred in the history of a sample and not just
-those that can potentially affect the genealogies. Many important results have
-been derived using this framework, one of which is particularly significant for
-our purposes here. \citet{eg90} proved that the expected number of recombination
-events back to the Grand MRCA of a sample of $n$ individuals grows like $e^\rho$
-as $\rho \rightarrow \infty$, where $\rho$ is the population scaled
-recombination rate. In this paper we consider a diploid model in which we have
-a sequence of $m$ discrete sites that are indexed from zero. Recombination
-occurs between adjacent sites at rate $r$ per generation, and therefore
-$\rho = 4 N_e r(m - 1)$. The Ethier and Griffiths result implies that
-the time required to simulate
-an ARG grows exponentially with the sequence length, and we can only
-ever hope to simulate ARGs for the shortest of sequences.
+Recombination Graph~\citep{g91,gm97}. In the ARG, nodes are events (either
+recombination or common ancestor) and the edges are ancestral chromosomes. A
+recombination event results in a single ancestral chromosome splitting into two
+chromosomes, and a common ancestor event results in two chromosomes merging
+into a common ancestor. Analytically, the ARG is a considerable simplification
+of Hudson's earlier work as it models all recombination events that occurred in
+the history of a sample and not just those that can potentially affect the
+genealogies. Many important results have been derived using this framework, one
+of which is particularly significant for our purposes here. Ethier and
+Griffiths~\citep{eg90} proved that the expected number of recombination events
+back to the Grand MRCA of a sample of $n$ individuals grows like $e^\rho$ as
+$\rho \rightarrow \infty$, where $\rho$ is the population scaled recombination
+rate. In this paper we consider a diploid model in which we have a sequence of
+$m$ discrete sites that are indexed from zero. Recombination occurs between
+adjacent sites at rate $r$ per generation, and therefore $\rho = 4 N_e r(m -
+1)$. The Ethier and Griffiths result implies that the time required to simulate
+an ARG grows exponentially with the sequence length, and we can only ever hope
+to simulate ARGs for the shortest of sequences.
 
 This result, coupled with the observed poor scaling of coalescent simulators
 such as the seminal \texttt{ms} program~\citep{h02} seems to imply that
@@ -154,18 +346,20 @@ methods~\citep{ld11,sd14,rhgs14}. The SMC simplifies the process of simulating
 genealogies by assuming that each marginal tree depends only on its immediate
 predecessor as we move from left-to-right across the sequence. As a
 consequence, the time required to simulate genealogies scales linearly with
-increasing sequence length. In practice, SMC based simulators such as \MaCS\
-and \scrm\ are many times faster than \ms.
+increasing sequence length. In practice, SMC based simulators such as
+\MaCS~\citep{cmw09} and \scrm~\citep{szml14} are many times faster than \ms.
 
 The SMC has disadvantages, however. Firstly, the SMC discards all long range
 linkage information and therefore can be a poor approximation when modelling
 features such as the length of admixture blocks~\citep{ln14}.  Improving the
-accuracy of the SMC is also difficult and error prone. For example, the
-\texttt{MaCS} simulator~\citep{cmw09} has a parameter to increase the
+accuracy of the SMC can also be difficult.
+For example, \MaCS\ has a parameter to increase the
 number of previous trees on which a marginal tree can depend.
-Paradoxically, this gives a worse approximation to the
-coalescent with recombination if we increase it beyond a certain
-limit~\citep{szml14}.
+Counter-intuitively, increasing this parameter beyond a certain limit
+results in a \emph{worse} approximation to the coalescent with
+recombination~\citep{szml14}. (The \scrm\ simulator
+provides a similar parameter that does not exhibit this unfortunate
+behaviour, however.)
 Incorporating complexities such as population structure~\citep{emm09},
 intra-codon recombination~\citep{ap10} and inversions~\citep{pkgk13} is
 non-trivial and can be substantially more complex than the corresponding
@@ -177,22 +371,27 @@ We solve these problems by introducing sparse trees and coalescence records as
 the fundamental units of genealogical analysis. By creating a concrete
 formalisation of the genealogies generated by the coalescent process in terms
 of an integer vector, we greatly increase the efficiency of simulating the
-exact coalescent with recombination. In Section~\ref{sec-simulation} we
+exact coalescent with recombination. In the section \textbf{\nameref{sec-simulation}},
+we
 discuss how Hudson's classical simulation algorithm can be defined in terms of
 these sparse trees, and why this leads to substantial gains in terms of the
 simulation speed and memory usage. We show that our implementation of the exact
 coalescent, \msprime, is competitive with approximate simulators for small
 sample sizes, and is faster than all other simulators for large sample sizes.
 This is possible because Hudson's algorithm does not traverse the entire ARG,
-but rather a small and poorly understood subset of it. We show some preliminary
-results indicating that the number of nodes in this graph may be a quadratic
+but rather a small subset of it. The ARG contains a large number of nodes that
+do not affect the genealogies of the sample~\cite{wh99}, and Hudson's algorithm saves time
+by not visiting these nodes. This subset of the ARG (sometimes known as the
+`little' ARG) has not been well characterised, which makes
+analysis of Hudson's algorithm difficult. However, we show some numerical
+results indicating that the number of nodes in the little ARG may be a quadratic
 function of the scaled recombination rate $\rho$ rather than an exponential.
 
 Generating simulated data is of little use if the results cannot be processed
 in an efficient and convenient manner. Currently available methods for storing
 and processing genealogies perform very poorly on trees with hundreds of thousands of
-nodes. In Section~\ref{sec-analysis} we show how the encoding of the
-correlated trees output by the simulation in Section~\ref{sec-simulation} leads
+nodes. In the section \textbf{\nameref{sec-analysis}}, we show how the encoding of the
+correlated trees output by our simulations leads
 to an extremely compact method of storing these genealogies. For large
 simulations, the representation can be thousands of times smaller than the most
 compact tree serialisation format currently available. Our encoding also leads
@@ -201,27 +400,27 @@ trees is several orders of magnitude faster than existing methods.
 
 The advantages of faster and more accurate simulation over huge sample sizes,
 and the ability to quickly process very large result sets may enable
-applications that were not previously feasible. In Section~\ref{sec-discussion}
-we conclude by discussing some of these applications and other uses of our
+applications that were not previously feasible. In the \textbf{\nameref{sec-discussion}}
+we conclude by considering some of these applications and other uses of our
 novel encoding of genealogies.
 The methods developed in this paper allow us to simulate the coalescent for
 very large sample sizes, where the underlying assumptions of the model
-may be violated~\citep{wt03,bcs14}. Addressing these issues is beyond
+may be violated~\citep{wt03,msbw11,bcs14}. Addressing these issues is beyond
 the scope of this work, but we note that the majority of our results
 can be applied to simulations of any retrospective population model.
 
-
-\section{Efficient coalescent simulation}
+\section*{Methods}
+\subsection*{Efficient coalescent simulation}
 \label{sec-simulation}
 
 In this section we define our  encoding of coalescent genealogies, and
 show how this leads to very efficient simulations. There are many different
 simulation packages, and so we begin with a brief review of the state-of-the-art before
-defining our encoding in Section~\ref{sec-simulation-algorithm} and
-analysing its performance in Section~\ref{sec-simulation-performance}.
+defining our encoding and analysing the resulting algorithm in the
+following subsections.
 
 Two basic approaches exist to simulate the coalescent with recombination. The
-first approach was defined by~\citet{h83b}, and works by applying the effects of
+first approach was defined by Hudson~\citep{h83b}, and works by applying the effects of
 recombination and common ancestor events to the ancestors of the sample as we
 go backwards in time. Events occur at a rate that depends only on the
 state of the extant ancestors, and so we can generate the waiting times to
@@ -238,7 +437,7 @@ and models of species with a skewed offspring distribution~\citep{zdge15}. Other
 developed user interfaces to facilitate easier analysis~\citep{mspmms05,rm07}.
 
 The second fundamental method of simulating the coalescent with recombination
-is due to~\citet{wh99}. In Wiuf and Hein's algorithm we begin by generating a
+is due to Wiuf and Hein~\citep{wh99}. In Wiuf and Hein's algorithm we begin by generating a
 coalescent tree for the left-most locus and then move across the sequence,
 updating the genealogy to account for recombination events. This process is
 considerably more complex than Hudson's algorithm because the relationship
@@ -263,7 +462,8 @@ directly to the set of sampled individuals at the leaves of this tree. When a
 coalescence between two overlapping segments occurs, we then have sufficient
 information to generate mutations and map them to the affected samples. This
 strategy, coupled with the use of sophisticated data structures, makes \cosi\
-many times faster than competing simulators such as \msms. The disadvantage of
+many times faster than competing simulators such as \msms~\citep{eh10}.
+The disadvantage of
 combining the mutation process with ARG traversal, however, is that the
 underlying genealogies are not available, and \cosi\ cannot directly output
 coalescent trees.
@@ -274,7 +474,7 @@ information is available, however, about their relative efficiencies.
 Hudson's \ms\ is widely regarded as the most efficient implementation of
 the exact coalescent and is the benchmark against which other programs are
 measured~\citep{mw06,cmw09,ef11,szml14,ydn14,wzlclmx14}. However,
-for larger sample sizes and long sequence lengths, \msms~\citep{eh10}
+for larger sample sizes and long sequence lengths, \msms\
 is much faster than \ms. Also, for these larger sequence lengths and sample
 sizes, \ms\ is unreliable and crashes~\citep{ef11,ydn14}. Thus,
 \msms\ is a much more suitable baseline against which to judge performance.
@@ -282,7 +482,7 @@ The \scrm\ simulator is the most efficient SMC based
 method currently available~\citep{szml14}.
 
 
-\subsection{Hudson's algorithm with sparse trees}
+\paragraph*{Hudson's algorithm with sparse trees}
 \label{sec-simulation-algorithm}
 
 An oriented tree~\cite[p.\ 461]{k11} is a sequence  of integers
@@ -304,11 +504,13 @@ tree) the root is $2n - 1$. We refer to such trees as dense because the $2n -
 2$ non-zero entries of the (binary) tree $\pi$ occur at $u = 1, \dots, 2n - 2$. A
 sparse oriented tree (or more concisely, sparse tree) is an oriented tree $\pi$
 in which the leaf nodes are $1, \dots, n$ as before, but internal nodes can be
-any integer $> n$.
+any integer $> n$. For example, the oriented trees $\langle 5,4,4,5,0\rangle$ and
+$\langle 6,5,5,0,6,0\rangle$ are topologically equivalent, but the
+former is dense and the latter sparse.
 
-Each ancestor in the history of the sample in which at least one marginal
-coalescence occurred corresponds to exactly one node. Ancestral nodes are
-numbered sequentially from $n + 1$. Note that we make a distinction between
+In our simulations, ancestral nodes are numbered sequentially from $n + 1$,
+and a new node is created when a coalescence occurs within one or more of
+the marginal genealogies. Note that we make a distinction between
 common ancestor events and coalescence events throughout. A common ancestor
 event occurs when two ancestors merge to form a common ancestor. If these
 ancestors have overlapping ancestral material, then there will also be at least
@@ -351,17 +553,19 @@ segments over the interval $[\ell, r)$ into a single ancestral segment. In
 general the coordinates of overlapping segments $x$ and $y$ will not exactly
 coincide, in which case we create an equivalent set of segments by
 subdividing into the intersections and `overhangs'. Suppose then that we
-have two segments $(\ell, r, u)$ and $(\ell, r, v)$ from $a$ and $b$
+have two exactly intersecting segments $(\ell, r, u)$ and $(\ell, r, v)$ from $a$ and $b$
 respectively; over the interval $[\ell, r)$ the nodes $u$ and $v$ coalesce into
 a common ancestor, which we associate with the next available node $w$. We
 record this information by storing the coalescence record $\left(\ell, r, w,
-(u, v), t\right)$. As we see in Section~\ref{sec-generating-trees}, these
+(u, v), t\right)$. As we see in the \textbf{\nameref{sec-generating-trees}}
+section, these
 records provide sufficient information to later recover all marginal trees.
 After recording this coalescence, we then check if there are any other segments
 in $P$ that intersect with $[\ell, r)$. If there are, the simulation of this
 region is not yet complete and we insert the segment $(\ell, r, w)$ into the
 ancestor of $a$ and $b$. On the other hand, if there is some subset of $[\ell,
-r)$ which intersects with no other segments in $P$, we know that the marginal
+r)$ such that there is no other segment in $P$ that intersects with it,
+ we know that the marginal
 tree covering this interval is complete and therefore we do not need to trace
 its history any further. If any other intervals overlap in $a$ and $b$, we
 perform the same operations, and finally update the next available node by
@@ -376,9 +580,9 @@ complete. This interpretation of Hudson's algorithm differs from the standard
 formulations~\citep{h83b,h90,mc05} by concretely defining the representation of
 ancestry and by introducing the idea of coalescence records. We have omitted
 many important details here in the interest of brevity; see
-Appendix~\ref{app-algorithm-listing} for a detailed listing of our
+\nameref{app-algorithm-listing} for a detailed listing of our
 implementation of Hudson's algorithm, and
-Appendix~\ref{app-algorithm-illustration} for an illustration of a complete
+\nameref{app-algorithm-illustration} for an illustration of a complete
 invocation of the algorithm.
 
 There are several advantages to our sparse tree representation of ancestry.
@@ -400,11 +604,11 @@ available under the terms of the GNU GPL at
 linked-list based representation of ancestral segments, and uses a binary
 indexed tree~\citep{f94,f95} to ensure the choice of ancestral segment involved
 in a recombination event can be done in logarithmic time.  The implementation
-of \msprime\ is based on the listings for Hudson's algorithm given in Appendix
-\ref{app-algorithm-listing}, which should provide sufficient detail to make
+of \msprime\ is based on the listings for Hudson's algorithm given in
+\nameref{app-algorithm-listing}, which should provide sufficient detail to make
 implementation in a variety of languages routine.
 
-\subsection{Performance analysis}
+\paragraph*{Performance analysis}
 \label{sec-simulation-performance}
 
 \begin{figure}
@@ -435,12 +639,13 @@ encounter is less than $e^\rho$~\citep{eg90}. This subset of the ARG is
 sometimes known as the `little' ARG, but the relationship between the `big' and
 little ARGs has not been well characterised.
 
-Figure~\ref{fig-algorithm-complexity} plots the average number of
+Fig.~\ref{fig-algorithm-complexity} plots the average number of
 recombination events generated by Hudson's algorithm for varying sequence
 lengths and sample sizes.  In this plot we also show the results of fitting a
 quadratic function to the number of recombination events as we increase the
 scaled recombination rate $\rho$. The fit is excellent, suggesting that the
-current upper bound of $e^\rho$ is far too pessimistic. \citet{wh99} previously
+current upper bound of $e^\rho$ is far too pessimistic. Wiuf and Hein~\citep{wh99}
+previously
 noted that the observed number of events in Hudson's algorithm was
 `subexponential' but did not suggest a quadratic bound.  Another point to note is
 that the rate at which the number of events grows as we increase the sample
@@ -458,14 +663,14 @@ for large sample sizes.
         Hudson's algorithm that can output genealogies.
         \MaCS~\citep{cmw09} is a popular SMC based simulator, and
         \scrm~\citep{szml14} is the most efficient sequential simulator
-        currently available. Both \MaCS\ and \scrm\ were run in the most
-        approximate SMC$'$ mode. Two results are shown for \msprime; one
+        currently available. Both \MaCS\ and \scrm\ were run in SMC$'$ mode.
+        Two results are shown for \msprime; one
         outputting Newick trees and another outputting the native HDF5 based format.
         }
 \end{figure}
 
 These expectations are borne out well in observations of our implementation of
-Hudson's algorithm in \msprime. Figure~\ref{fig-tree-simulation-time} compares
+Hudson's algorithm in \msprime. Fig.~\ref{fig-tree-simulation-time} compares
 the time required to simulate coalescent trees using a number of simulation
 packages. As we increase the sequence length in the left-hand panel, the
 running time of \msprime\ increases faster than linearly, but at quite a slow
@@ -481,25 +686,25 @@ simulators is fair), and another that outputs directly in \msprime's native
 format. Conversion to Newick is an expensive process, particularly for larger
 sample sizes.  When we eliminate this bottleneck, simulation time grows
 at quite a slow, approximately linear rate. The memory usage of \msprime\ is also
-modest, with the simulations in Figure~\ref{fig-tree-simulation-time} requiring
-less than a gigabyte of RAM. Supplementary
-Figure~\ref{fig-tree-simulation-num-trees} shows
+modest, with the simulations in Fig.~\ref{fig-tree-simulation-time} requiring
+less than a gigabyte of RAM. Supporting Fig.~\ref{fig-tree-simulation-num-trees} shows
 that the mean number of recombination breakpoints (i.e., the number
 of recombination events within ancestral material) output by all these
 simulators is identical, and matches Hudson and Kaplan's
 prediction~\citep{hk85} very well, giving us some confidence in the correctness of the
-results. The \cosi~\citep{sss14} simulator was not included in this comparison
-as it does not support outputting trees directly.
+results. Supporting Fig.~\ref{fig-small-n-simulation-time} shows the relative
+performance of \msprime\ and \scrm\ for a small sample size, and also shows the
+effect of increasing the size of \scrm's sliding window.
 
 We are often interested in the haplotypes that result from imposing a mutation
-process onto genealogies as well as the genealogies themselves. Supplementary
-Figure~\ref{fig-haplotype-simulation-time} compares the time required to
+process onto genealogies as well as the genealogies themselves. Supporting
+Fig.~\ref{fig-haplotype-simulation-time} compares the time required to
 generate haplotypes using \scrm, \msprime\ and \cosi. Simulation times are
 similar in all three for a fixed sample size of $1000$ and increasing sequence
 length. For increasing sample sizes, both \cosi\ and \msprime\ are
 substantially faster than \scrm. However, \msprime\ is significantly faster
-than \cosi\ (and uses less memory; see Supplementary
-Figure~\ref{fig-haplotype-simulation-memory}), particularly when we remove the
+than \cosi\ (and uses less memory; see Supporting
+Fig.~\ref{fig-haplotype-simulation-memory}), particularly when we remove the
 large overhead of outputting the haplotypes in text form.
 
 Performance statistics were measured on Intel Xeon E5-2680 processors
@@ -507,7 +712,7 @@ running Debian 8.2. All code required to run comparisons and
 generate plots is available at
 \url{https://github.com/jeromekelleher/msprime-paper}.
 
-\section{Efficient genealogical analysis}
+\subsection*{Efficient genealogical analysis}
 \label{sec-analysis}
 
 There has been much recent interest in the problem of representing large scale
@@ -546,17 +751,19 @@ nodes.
 
 In this section we introduce a new representation of the correlated trees
 output by a coalescent simulation using coalescence records. In
-Section~\ref{sec-tree-sequences} we discuss this tree sequence structure and
+the \textbf{\nameref{sec-tree-sequences}} subsection we discuss this structure and
 show how it compares in practice to existing approaches in terms of storage
-size. Section~\ref{sec-generating-trees} presents an algorithm to sequentially
+size. Then, the \textbf{\nameref{sec-generating-trees}} subsection
+presents an algorithm to sequentially
 generate the marginal genealogies from a tree sequence, which we compare with
-existing Newick-based methods. Finally, in Section~\ref{sec-counting-leaves} we
+existing Newick-based methods. Finally, in the \textbf{\nameref{sec-counting-leaves}}
+subsection we
 show how the algorithm to sequentially visit trees can be extended to
 efficiently maintain the counts of leaves from a specific subset, and show how
 this can be applied in a calculation commonly used in genome wide association
 studies.
 
-\subsection{Tree Sequences}
+\paragraph*{Tree Sequences}
 \label{sec-tree-sequences}
 
 \begin{figure}
@@ -576,26 +783,27 @@ studies.
 }
 \end{figure}
 
-The output of Hudson's algorithm as described in
-Section~\ref{sec-simulation-algorithm} is a list of coalescence records.
+As described earlier, the output of our formulation of Hudson's algorithm
+is a list of coalescence records.
 Each coalescence record is a tuple $(\ell, r, u, c, t)$
 describing the coalescence of a list of child nodes $c$ into the parent $u$ at
 time $t$ over the half-closed genomic interval $[\ell, r)$. (Because only
 binary trees are possible in the standard coalescent, we assume the child node
 list $c$ is a $2$-tuple $(c_1, c_2)$ throughout. However, arbitrary numbers of
 children can be accommodated without difficulty to support
-common ancestor events in which more than two lineages merge~\citep{dk99,p99,s99}.)
+common ancestor events in which more than two lineages
+merge~\citep{gdb00,dk99,p99,s99}.)
 We refer to this set of records as a
 \emph{tree sequence}, as it is a compact encoding of the set of correlated
 trees representing the genealogies of a sample.
-Figure~\ref{fig-tree-sequence-illustration} shows an illustration of
-the tree sequence output by an example simulation (a full trace of this
-simulation is shown in Supplementary Figure~\ref{fig-hudsons-algorithm-illustration}).
+Fig.~\ref{fig-tree-sequence-illustration} shows an illustration of
+the tree sequence output by an example simulation (see
+\nameref{app-algorithm-illustration} for a full trace of this simulation).
 
 The tree sequence provides a concise method of representing the correlated
 genealogies generated by coalescent simulations because it stores node
 assignments shared across adjacent trees exactly once. Consider node $7$ in
-Figure~\ref{fig-tree-sequence-illustration}. This node is shared in the first
+Fig.~\ref{fig-tree-sequence-illustration}. This node is shared in the first
 two marginal trees, and in both cases it has two children, $1$ and $6$. Even though
 the node spans two marginal trees, the node assignment is represented in one
 coalescence record $(0, 7, 7, (1, 6), 0.170)$.  Importantly, this holds true
@@ -642,7 +850,7 @@ simulated chromosome we transitioned from one marginal tree to the next by
 removing and applying only two records. Crucially, modifying the nodes that
 were affected by this transition did not result in a relabelling of any
 nodes that were not affected.
-As \citet{wh99,wh99b} showed, the effect of a
+As Wiuf and Hein~\citep{wh99,wh99b} showed, the effect of a
 recombination at a given point in the sequence is to cut the branch above some
 node in the tree to the left of this point, and reattach it within another
 branch. This process is known as a subtree-prune-and-regraft~\citep{s03,s06}
@@ -669,18 +877,18 @@ formulation.
 \end{figure}
 
 Prune-and-regraft operations that do not affect the root
-require three records, as illustrated in Figure~\ref{fig-tree-transition}.
+require three records, as illustrated in Fig.~\ref{fig-tree-transition}.
 Two other possibilities exist
 for how the current tree can be edited as we move along the sequence. The first
 case is when we have a prune and regraft that involves a change in root
 node; this requires only two records and is illustrated in the first transition
-in Figure~\ref{fig-tree-sequence-illustration}. The other case that
+in Fig.~\ref{fig-tree-sequence-illustration}. The other case that
 can arise from a single recombination event is a simple root change in which
 the only difference between the adjacent trees is the time of the MRCA. This
 requires one record, and is illustrated in the second
-transition in Figure~\ref{fig-tree-sequence-illustration}. These three
+transition in Fig.~\ref{fig-tree-sequence-illustration}. These three
 possibilities are closely related to the three classes of
-subtree-prune-and-regraft identified by~\citet{s03,s06}.
+subtree-prune-and-regraft identified by Song~\citep{s03,s06}.
 
 Knowing the maximum number of records arising from a single recombination event
 provides us with a useful bound on the expected number of records in a tree
@@ -696,7 +904,7 @@ Storing a tree sequence as a set of coalescence records therefore requires $O(n
 separately (such as Newick) must require $O(n \rho \log n)$ space. This
 difference is substantial in practice. As an example of a practical simulation
 of the sort currently being undertaken, we repeated the simulation run
-by~\citet{lkkq15}, in which we simulate a $100$ megabase region with a
+by Layer et al.~\citep{lkkq15}, in which we simulate a $100$ megabase region with a
 recombination rate of $10^{-3}$ per base per $4N_e$ generations for a sample of
 100,000 individuals. This simulation required approximately $6$ minutes and
 850MB of RAM to run using \msprime; the original simulation reportedly required
@@ -723,13 +931,13 @@ of the entire tree sequence when expressed as coalescence records.
 Associating mutation information with a tree sequence is straightforward.  For
 example, to represent a mutation that occurs on the branch that
 joins node $7$ to node $9$ at site $1$ in
-Figure~\ref{fig-tree-sequence-illustration}, we simply record the tuple $(7,
+Fig.~\ref{fig-tree-sequence-illustration}, we simply record the tuple $(7,
 1)$. (Infinite sites mutations can be readily accommodated by assuming that
 the coordinate space is continuous rather than discrete.)
 Because only the associated node and position of each mutation needs to
 be stored, this results in a very concise representation of the full
 genealogical history and mutational state of a sample. Repeating the simulation
-above with with a scaled mutation rate of $10^{-3}$ per unit of sequence
+above with a scaled mutation rate of $10^{-3}$ per unit of sequence
 length per $4N_e$ generations resulted in 1.2 million infinite sites
 mutations. The total size of the
 HDF5 representation of the tree sequence and mutations was 102MB (49MB using
@@ -745,7 +953,7 @@ haplotypes than the tree sequence. However, the PBWT does not contain any
 genealogical data, and therefore contains less information than the tree
 sequence.
 
-\subsection{Generating trees}
+\paragraph*{Generating trees}
 \label{sec-generating-trees}
 
 Coalescence records provide a very compact means of encoding correlated
@@ -758,8 +966,8 @@ these marginal genealogies.
 
 For algorithms involving tree sequences it is useful to regard the set of
 coalescence records as a table and to index the columns independently (see
-Supplementary Table~\ref{tab-tree-sequence} for the table corresponding to
-Figure~\ref{fig-tree-sequence-illustration}).  Therefore define a tree sequence
+Supporting Table~\ref{tab-tree-sequence} for the table corresponding to
+Fig.~\ref{fig-tree-sequence-illustration}).  Therefore define a tree sequence
 $T$ as a tuple of vectors $T = (\vect{l}, \vect{r}, \vect{u}, \vect{c},
 \vect{t})$, such that for each index $1 \leq j \leq M$, $(\vect{l}_j,
 \vect{r}_j, \vect{u}_j, \vect{c}_j, \vect{t}_j)$ corresponds to one coalescence
@@ -776,7 +984,7 @@ $\vect{l}_j \leq x < \vect{r}_j$. Spatial indexing structures
 such as the segment tree~\citep{s89} allow us to find all $k$ segments out
 of a set of $N$ that intersect with a given point in $O(k + \log N)$ time.
 Therefore, since the expected number of records is
-$O(n + \rho \log n)$ as shown in Section~\ref{sec-tree-sequences},
+$O(n + \rho \log n)$ as shown in the previous subsection,
 the overall complexity of generating a single tree
 is $O(n + \log(n + \rho \log n))$.
 
@@ -792,14 +1000,14 @@ and removed, respectively. Records are applied in order of nondecreasing
 left coordinate and increasing time, and records are removed in nondecreasing
 order of right coordinate and decreasing time. That is, for every
 pair of indexes $j$ and $k$ such that  $1 \leq j < k \leq M$ we
-have $\vect{l}_{\indexin_j} \leq \vect{l}_{\indexin_{k}}$ and
-$\vect{t}_{\indexin_j} < \vect{t}_{\indexin_{k}}$, and also
-$\vect{r}_{\indexout_j} \leq \vect{r}_{\indexout_{k}}$ and
+have either $\vect{l}_{\indexin_j} < \vect{l}_{\indexin_{k}}$ or
+$\vect{l}_{\indexin_j} = \vect{l}_{\indexin_{k}}$ and
+$\vect{t}_{\indexin_j} < \vect{t}_{\indexin_{k}}$;
+and similarly, either
+$\vect{r}_{\indexout_j} < \vect{r}_{\indexout_{k}}$ or
+$\vect{r}_{\indexout_j} = \vect{r}_{\indexout_{k}}$ and
 $\vect{t}_{\indexout_j} > \vect{t}_{\indexout_{k}}$. We assume that
 these index vectors have been pre-calculated below.
-
-% TODO JUST FOR PREPRINT --- remove.
-% \clearpage
 
 \begin{taocpalg}{T}{Generate trees}
 {Sequentially visit the sparse trees $\pi$ in a tree sequence
@@ -869,17 +1077,18 @@ directly available in Algorithm T.  The tree iteration code in \msprime's
 Python API makes all of this information available, facilitating easy tree
 traversal in both top-down and bottom-up fashion.
 
-\subsection{Counting leaves}
+\paragraph*{Counting leaves}
 \label{sec-counting-leaves}
 
-Section~\ref{sec-generating-trees} provides an algorithm to efficiently visit
+The previous subsection provides an algorithm to efficiently visit
 all marginal genealogies in a tree sequence. This algorithm can be easily
 augmented to maintain summaries of tree properties as we sweep across the
 sequence. As an example of this, we show how to augment Algorithm~T to maintain
 the counts of the number of leaves from a specific set that are below each
 internal node. More precisely, given some subset $S$ of our sample, we
-maintain a vector $\beta$ such that for any node $u$, $\beta_u$ is
-the number of leaves from the set $S$ below $u$. This allows us to
+maintain a vector $\beta$ such that for any node $u$, $\beta_u$
+is the number of leaves below $u$ that belong to the set $S$.
+This allows us to
 quickly calculate allele frequencies: since each mutation is associated
 with a particular node $u$, $\beta_u / |S|$  is the frequency of the
 mutation within $S$. Calculating allele frequencies within specific
@@ -980,7 +1189,7 @@ required $54$ seconds. Using \msprime's Python API, the same odds-ratio test
 required around $10$ seconds.
 
 
-\section{Discussion}
+\section*{Discussion}
 \label{sec-discussion}
 
 The primary contribution of this paper is to introduce a new encoding for the
@@ -995,12 +1204,11 @@ over classical simulators such as \ms, so that the exact simulation of
 genealogies for the coalescent with recombination over chromosome scales is
 feasible for the first time. We have presented an implementation based on the
 sparse tree encoding called \msprime, which is faster than all other simulators
-for large sample sizes. Currently, we support all demographic events that can
-be simulated using \ms\ in a single population. We hope to add support for
-simple discrete population structure in the near future, as well as for
-populations evolving in continuous space~\citep{bev10,bke10,bev13}. We also
-hope to add gene conversion~\citep{wh00} and variable recombination rates
-following the approach taken in \cosi.
+for large sample sizes. This simulator supports the full discrete population
+structure and demographic event model provided by \ms\ along with
+variable recombination rates. We plan to include
+populations evolving in continuous space~\citep{bev10,bke10,bev13}
+and gene conversion~\citep{wh00} in subsequent releases.
 
 Coalescence records also lead to an extremely compact storage format that is
 several orders of magnitude smaller than the most compact method currently
@@ -1019,7 +1227,7 @@ Firstly, sequencing projects are being conducted on an unprecedented
 scale \citep{gn14,u15,1k15,ghgz15,e15,slfc15}, and the storage and analysis of
 these data pose serious computational challenges. Sophisticated new methods are
 being developed to organise and analyse information on this immense
-scale~\citep{d14,l15,lkkq15}. Perversely, developers have struggled to generate
+scale~\citep{d14,l15,lkkq15}. Developers have struggled to generate
 simulated data on a similar scale~\citep{d14,lkkq15}, as present day simulators
 perform poorly on these huge sample sizes. Using \msprime, the time required to
 generate genome scale data for hundreds of thousands of samples is reduced from
@@ -1074,23 +1282,20 @@ principled approaches that may be adopted~\citep{f13,rhgs14}. Using the
 PBWT~\citep{d14} to find long haplotypes (which will usually correspond to long
 records) seems like a particularly promising avenue.
 
-Finally, an interesting question arises when we consider the problem of
-inferring a tree sequence from data. Many authors regard the ARG as a useful
-data structure to represent the history of a sample and explicitly infer ARGs
-from data~\citep{md06,rhgs14}. The tree sequence is not an ARG, however, since
-any given tree sequence can correspond to an infinite number of ARGs. By
-discarding information about the times and locations of recombination events,
-we lose information about the underlying graph that was traversed by Hudson's
-algorithm. We have seen that this leads to a very compact representation and to
-highly efficient algorithms to reconstruct marginal trees and calculate allele
-frequencies. In a sense, the tree sequence is all that we can ever hope to
-estimate. If the mutation rate was infinite, we could reconstruct the tree
-sequence perfectly, but we would still not know the precise time and location
-of all recombination events. The specific realisation of the ARG that gave rise
-to the data that we observe is therefore unknowable. By focusing on the problem
-of estimating the observable consequences of an ARG---the tree sequence---we
-may increase our power to detect its properties.
-
+Finally, an interesting issue arises when we consider the problem of inferring
+a tree sequence from data. Suppose we have observed a set of haplotypes
+resulting from a coalescent simulation with infinite sites mutations occurring
+at a very high rate. Under these conditions, the underlying tree sequence can
+be recovered exactly from the data, but the corresponding ARG (i.e., the
+specific realisation of the ARG that was traversed by Hudson's algorithm)
+cannot. For example, a recombination may have occurred during the simulation
+that was immediately followed by a common ancestor event involving the same
+lineages. These nodes in the ARG can have no effect on the data, and are
+therefore unobservable. To put this in another way, there is no observable
+information in an ARG that is not in a tree sequence. Given this
+representational sufficiency and the storage and processing efficiencies
+demonstrated in this article, we would argue that a tree sequence is a more
+natural and powerful representation of observed genetic variation than an ARG.
 
 \section*{Acknowledgements}
 We would like to thank Richard Durbin for helpful discussions and insights.
@@ -1098,12 +1303,14 @@ This work was supported by Wellcome Trust core award 090532/Z/09/Z to the Wellco
 Trust Centre for Human Genetics, Wellcome Trust grant 100956/Z/13/Z to GM,
 and EPSRC grants EP/I01361X/1, EP/I013091/1 and EP/K034316/1 to AME.
 
-\bibliographystyle{abbrvnat}
 \bibliography{paper}
 
-\appendix
-\section{Detailed listing for Hudson's algorithm}
+\clearpage
+
+\section*{S1 Text}
 \label{app-algorithm-listing}
+
+\textbf{Detailed listing of Hudson's algorithm}
 
 In this section we provide a detailed description of our implementation of
 Hudson's algorithm. First, we require some notation. Let
@@ -1350,17 +1557,17 @@ individual. If both $x$ and $y$ are non-null, on the other hand,
 we proceed to~\algref{C3}. In this step we consider the two segments $x$
 and $y$ and decide which of a number of cases we must deal with.
 First, we maintain the invariant that $\segleft(x) \leq
-\segright(y)$; if this is violated, we swap the variables. Then, we address the
+\segleft(y)$; if this is violated, we swap the variables. Then, we address the
 various cases that can occur as $x$ and $y$ overlap.
 
 The simplest case is when there is no overlap between $x$ and $y$ which
 occurs when $\segright(x) \leq \segleft(y)$; here, we simply merge $x$
 into the new segment chain and move on to \algref{C8}. The next case
 we deal with is when we have a partial overlap between $x$ and $y$,
-which occurs when $\segleft(x) \neq \segright(y)$. In this case, we create
+which occurs when $\segleft(x) \neq \segleft(y)$. In this case, we create
 a new segment to represent this `overhang', and merge this into the
 new segment chain in \algref{C8}. Finally, if none of these conditions
-have been satisfied, we know that $\segleft(x) = \segright(y)$ and
+have been satisfied, we know that $\segleft(x) = \segleft(y)$ and
 there is therefore a coalescence which we handle in \algref{C4}.
 
 First, we check if another coalescence has occurred during this
@@ -1413,6 +1620,36 @@ records output by the algorithm. This is easily done, since any records
 $(\ell, k, u, c, t)$ and $(k, r, u, c, t)$ that can be merged must be
 stored sequentially without any intervening records.
 
+Variable recombination rates can be incorporated into Algorithm H in (at least)
+two different ways. The most direct way (and the approach taken in \cosi) is to
+replace the uniform weight associated with segments when they are chosen as
+recombination breakpoints with a probability distribution. When we insert a
+segment $z$ into the binary indexed tree $L$, we currently assume that all the
+links it subtends are equally likely to be the focus of a recombination event
+(see steps H1, R3, R4 and C8). To implement a variable recombination rate then,
+we need to assign the weights induced by the recombination map on the
+subtended links to a segment when we insert it into $L$. We also need to modify
+step R1 to generate the location of a breakpoint following the correct
+distribution. The changes required to the algorithm to implement this are
+straightforward.
+
+The second way to implement a variable recombination rate (and the approach
+currently taken in \msprime) is to do so when we are generating mutations,
+which therefore does not require any modifications to Algorithm H. In this case
+we assume that the coordinates of coalescence records are in genetic space,
+which we can be transformed into physical coordinates using a given genetic
+map. Mutations are then generated in this physical coordinate space
+and mapped onto the appropriate genealogies. The
+advantage of this approach over the method outlined in the previous paragraph
+is that it is quite efficient to implement, since we only need to use the
+recombination map to translate back and forth between coordinate spaces during
+mutation generation. The disadvantage of this `post-processing' approach is
+that other processes such as gene conversion are more difficult to incorporate.
+
+Incorporating selection into coalescent simulations is non-trivial,
+but existing methods~\citep{sc04,ti09,eh10,sss14} may be adapted to include
+specific forms of selection in Algorithm H.
+
 The implementation of \msprime\ is closely based on Algorithm H as given here.
 We also provide a simpler Python implementation in the file
 \texttt{algorithms.py} at
@@ -1420,8 +1657,10 @@ We also provide a simpler Python implementation in the file
 contains all code required to run the simulations, and to create all figures
 and illustrations in this paper.
 
-\section{Illustration of Hudson's algorithm}
+\section*{S2 Text}
 \label{app-algorithm-illustration}
+
+\textbf{Illustration of Hudson's algorithm}
 
 \begin{figure}
     \begin{center}
@@ -1438,7 +1677,7 @@ and illustrations in this paper.
     }
 \end{figure}
 
-Figure~\ref{fig-hudsons-algorithm-illustration} shows an illustration of
+Fig.~\ref{fig-hudsons-algorithm-illustration} shows an illustration of
 Hudson's algorithm for a sample of four individuals. In this illustration we
 show the state of the algorithm and its effects on the marginal trees after
 every event. The state of the algorithm is fully defined by the ancestral
@@ -1447,7 +1686,7 @@ the next available node $w$ and the current time $t$. Although it is
 not necessary to store the partially built genealogies in memory, we show them
 here in the lower part of each panel for clarity. The left-to-right axis
 represents genomic coordinates. We also show the current time ($t$)
-and the number of potential recombination breakpoints ($L$) in each panel.
+and the number of potential recombination breakpoints ($B$) in each panel.
 
 In this example, we have simulated the ancestry of the sample for a sequence of
 $10$ sites. The initial state of the simulation at time $0$ is shown in panel
@@ -1455,7 +1694,8 @@ $10$ sites. The initial state of the simulation at time $0$ is shown in panel
 Lineage $l_1$ can be represented as the segment $(0, 10, 1)$, which states that
 over the genomic interval $[0, 10)$, the lineage occupies the tree node $1$.
 This information is shown explicitly in the figure, where we draw the full range
-of each segment and label the line with the node it is associated with.  Nodes
+of each segment and label the line with the node with which it is associated.
+Nodes
 are colour-coded, so that we can easily see which tree nodes are associated
 with each segment. Since this is the initial state of the algorithm, the only
 tree nodes defined are the leaf nodes. This is shown in the bottom part of the
@@ -1492,7 +1732,7 @@ the amount of ancestral material present in each distinct interval produced by
 recombination. An important aspect of Hudson's algorithm is that we do not
 continue to track the ancestry of segments in which the trees are already
 complete. An example of this can be seen in panel (f) of
-Figure~\ref{fig-hudsons-algorithm-illustration}.  In this event lineages $l_8$ and
+Fig.~\ref{fig-hudsons-algorithm-illustration}.  In this event lineages $l_8$ and
 $l_9$ have merged to form $l_{11}$. In the interval $[0, 7)$, these have overlapping
 ancestral material and we therefore create a new node $7$ and update the trees
 covering $[0, 2)$ and $[2, 7)$ to show that node $7$ is the parent of $1$ and
@@ -1510,12 +1750,15 @@ recombination breakpoints for $l_{11}$ is therefore $9$. In contrast,
 there are only $2$ possible breakpoints for $l_{10}$, since any recombination that
 occurs in $[0, 7)$ cannot affect the ancestral material. Similarly $l_5$ has only
 one potential breakpoint, and so the total number of potential breakpoints
-$L = 12$.
+$B = 12$.
 
 
 % \clearpage
 
-\section{Supplemental Figures}
+\section*{Supporting Figures and Tables}
+
+\captionsetup[table]{name=Supporting Table}
+\captionsetup[figure]{name=Supporting Figure}
 
 \begin{table}[h]
 \begin{center}
@@ -1532,8 +1775,8 @@ $L = 12$.
 \end{tabular}
 \end{center}
 \caption{\label{tab-tree-sequence} Tabular representation of the coalescence
-records output by the simulation in Figure~\ref{fig-hudsons-algorithm-illustration}
-and depicted in Figure~\ref{fig-tree-sequence-illustration}.
+records output by the simulation in Fig.~\ref{fig-hudsons-algorithm-illustration}
+and depicted in Fig.~\ref{fig-tree-sequence-illustration}.
 The corresponding index vectors are $\indexin = (2, 4, 6, 1, 3, 5)$
 and $\indexout = (6, 2, 4, 5, 3, 1)$.}
 \end{table}
@@ -1554,7 +1797,8 @@ and $\indexout = (6, 2, 4, 5, 3, 1)$.}
         \includegraphics[width=10cm]{figures/haplotype_simulation_memory}
     \end{center}
     \caption{\label{fig-haplotype-simulation-memory} The corresponding maximum
-        memory usages for the simulators in Figure~\ref{fig-haplotype-simulation-time}.
+        memory usages for the simulators in Supporting
+        Fig.~\ref{fig-haplotype-simulation-time}.
         }
 \end{figure}
 
@@ -1564,7 +1808,7 @@ and $\indexout = (6, 2, 4, 5, 3, 1)$.}
     \end{center}
     \caption{\label{fig-tree-simulation-num-trees} The  mean
         number of recombination breakpoints for the simulations in
-        Figure~\ref{fig-tree-simulation-time} along with the theoretical prediction
+        Fig.~\ref{fig-tree-simulation-time} along with the theoretical prediction
         (black line). This plot shows that the number of recombination events within ancestral
         material for these simulations is identical for all simulators and agrees
         very well with the theoretical value of $\rho H_{n - 1}$, where
@@ -1572,6 +1816,18 @@ and $\indexout = (6, 2, 4, 5, 3, 1)$.}
         }
 \end{figure}
 
-
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=10cm]{figures/small_n_simulation_time}
+    \end{center}
+    \caption{\label{fig-small-n-simulation-time} Comparison of
+    simulation times with \msprime\ and \scrm\ for a
+    sample size of $n = 20$ with increasing sequence length.
+    Several different approximation levels are
+    shown for \scrm\ using the \texttt{-l} option. The \texttt{-l 500r} option
+    is described as a conservative value giving very good accuracy,
+    and \texttt{-l 100r} is recommended as a good compromise
+    between running time and accuracy.}
+\end{figure}
 
 \end{document}

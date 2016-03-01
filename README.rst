@@ -31,7 +31,16 @@ we need the following::
 Paper and illustrations
 -----------------------
 
-To create the paper and illustrations, simple type::
+To create the paper and illustrations, we first need to get the PLoS style
+files::
+
+    $ wget http://journals.plos.org/plosone/s/file?id=SyJ3/plos-latex-template.zip
+    $ unzip file\?id\=SyJ3%2Fplos-latex-template.zip
+
+The location of this file will probably change, but these commands worked at the
+time of writing.
+
+To compile the LaTeX document, run::
 
     $ make
 
