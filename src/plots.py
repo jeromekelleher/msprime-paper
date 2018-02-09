@@ -75,7 +75,7 @@ def get_mean_records_per_tree(tree_sequence):
     """
     num_trees = 0
     mean_out = 0
-    for _, records_out, records_in in tree_sequence.diffs():
+    for _, records_out, records_in in tree_sequence.edge_diffs():
         num_trees += 1
         mean_out += len(records_out)
     return mean_out / num_trees
@@ -164,14 +164,13 @@ class MsprimeSimulator(Simulator):
                 for h in tree_sequence.haplotypes():
                     print(h, file=f)
         self.tree_file_size[j] = os.path.getsize(treefile)
-        self.used_memory[j] = sim.get_used_memory()
-        self.num_trees[j] = sim.get_num_breakpoints()
-        self.num_multiple_re_events = \
-            sim.get_num_multiple_recombination_events()
-        self.num_re_events[j] = sim.get_num_recombination_events()
-        self.num_ca_events[j] = sim.get_num_common_ancestor_events()
-        self.num_records[j] = tree_sequence.get_num_records()
-        self.num_nodes[j] = tree_sequence.get_num_nodes()
+        self.used_memory[j] = sim.used_memory
+        self.num_trees[j] = sim.num_breakpoints
+        self.num_multiple_re_events = sim.num_multiple_recombination_events
+        self.num_re_events[j] = sim.num_recombination_events
+        self.num_ca_events[j] = sim.num_common_ancestor_events
+        self.num_records[j] = tree_sequence.num_edges
+        self.num_nodes[j] = tree_sequence.num_nodes
         self.num_records_per_tree = get_mean_records_per_tree(tree_sequence)
 
     def run(self):
