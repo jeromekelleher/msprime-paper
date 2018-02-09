@@ -62,7 +62,7 @@ def process_worker(work):
     sys.stdout.flush()
     datum = sim.run()
     results_file = os.path.join(results_dir, sim.get_results_file())
-    with open(results_file, "w") as f:
+    with open(results_file, "wb") as f:
         pickle.dump(datum, f)
 
 
