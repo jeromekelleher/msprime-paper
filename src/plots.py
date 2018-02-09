@@ -145,21 +145,21 @@ class MsprimeSimulator(Simulator):
     simulator_id = "msprime"
 
     def run_replicate(self, j, treefile):
-        sim = msprime.TreeSimulator(self.sample_size)
-        sim.set_num_loci(self.num_loci)
-        scaled_recombination_rate = self.get_scaled_recombination_rate()
-        # We don't use ms's scaling.
-        scaled_recombination_rate /= (self.num_loci - 1)
-        sim.set_scaled_recombination_rate(scaled_recombination_rate)
-        sim.set_max_memory("10G")
+        recomb_map = msprime.RecombinationMap.uniform_map(
+                self.num_loci, self.recombination_rate, self.num_loci)
+        sim = msprime.simulator_factory(
+            self.sample_size, recombination_map=recomb_map,
+            Ne=self.effective_population_size)
         sim.run()
-        tree_sequence = sim.get_tree_sequence()
+        mutation_rate = 0
+        if self.generate_haplotypes:
+            mutation_rate = self.mutation_rate
+        mutation_generator = msprime.MutationGenerator(
+            msprime.RandomGenerator(random.randint(1, 2**31)), mutation_rate)
+        tree_sequence = sim.get_tree_sequence(mutation_generator)
         if self.generate_trees:
             tree_sequence.dump(treefile)
         if self.generate_haplotypes:
-            scaled_mutation_rate = self.get_scaled_mutation_rate()
-            scaled_mutation_rate /= self.num_loci
-            tree_sequence.generate_mutations(scaled_mutation_rate)
             with open(treefile, "w") as f:
                 for h in tree_sequence.haplotypes():
                     print(h, file=f)
@@ -331,7 +331,6 @@ class MscompatSimulator(MsSimulator):
     def get_args(self):
         args = super(MscompatSimulator, self).get_args()
         # Set the max memory to something more sensible
-        args += ['-M', '10G']
         return args
 
 

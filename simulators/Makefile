@@ -13,8 +13,10 @@ cosi2:
 	# work.
 	export LC_ALL=C
 
-macs:
-	wget http://macs.googlecode.com/files/macs-0.5d.tar.gz
+macs: macs-0.5d.tar.gz
+	# Downoad for macs no longer works. Get from 
+	# https://code.google.com/archive/p/macs/downloads
+	# wget http://macs.googlecode.com/files/macs-0.5d.tar.gz
 	tar -zxvf macs-0.5d.tar.gz
 	mv macs macs_dir
 	cd macs_dir && make
@@ -27,8 +29,11 @@ scrm:
 	make -C scrm-${SCRM_VERSION} 
 	cp scrm-${SCRM_VERSION}/scrm ./
 
-ms:
-	wget https://webshare.uchicago.edu/users/rhudson1/Public/ms.folder/ms.tar.gz
+ms: ms.tar.gz
+	# ms download doesn't work any more because the website won't give 
+	# permanent links. Need to download from 
+	# Http://home.uchicago.edu/rhudson1/source/mksamples.html
+	# first then build.
 	tar -zxvf ms.tar.gz
 	cd msdir && gcc -O3 -o ms ms.c streec.c rand1.c -lm
 	cp msdir/ms ./
